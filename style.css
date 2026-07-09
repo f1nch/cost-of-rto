@@ -237,22 +237,7 @@ input[type="number"] {
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
-.hero-result {
-  border-color: var(--accent-red);
-  position: relative;
-  padding-bottom: 28px;
-  overflow: hidden;
-}
-.hero-result::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 12px;
-  background:
-    linear-gradient(135deg, var(--page) 50%, transparent 50%) 0 -1px / 16px 16px repeat-x,
-    linear-gradient(-135deg, var(--page) 50%, transparent 50%) 0 -1px / 16px 16px repeat-x;
-  filter: drop-shadow(0 1px 0 var(--gridline)) drop-shadow(0 -1px 1px rgba(0,0,0,0.08));
-}
+.hero-result { border-color: var(--accent-red); }
 .hero-number {
   margin: 0;
   font-family: var(--mono);
