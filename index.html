@@ -174,10 +174,6 @@
         <label for="clothingMonthly">Clothing / dry cleaning / appearance, per month ($)</label>
         <input type="number" id="clothingMonthly" min="0" step="1" value="25">
       </div>
-      <div class="field">
-        <label for="wfhExtraMonthly">Extra cost of working from home, per month ($) <span class="hint">(electricity, heat, internet, subtracted from your total since WFH isn't free either)</span></label>
-        <input type="number" id="wfhExtraMonthly" min="0" step="1" value="60">
-      </div>
     </fieldset>
 
     <fieldset class="section">
@@ -221,6 +217,10 @@
         <label for="taxRate">Marginal tax rate (%) <span class="hint">(rough estimate, adjust to your bracket)</span></label>
         <input type="number" id="taxRate" min="0" max="80" step="1" value="25">
       </div>
+      <div class="field">
+        <label for="wfhExtraMonthly">Extra cost of working from home, per month ($) <span class="hint">(electricity, heat, internet — optional, subtracted from your total. Off by default since it's hard to pin down and often marginal.)</span></label>
+        <input type="number" id="wfhExtraMonthly" min="0" step="1" value="0">
+      </div>
     </details>
   </form>
 </main>
@@ -228,10 +228,11 @@
 <section class="methodology wrap">
   <h2>Methodology</h2>
   <p>This calculator estimates recurring costs tied to in-office work: transportation, parking, food, vehicle
-    wear, clothing, and the value of unpaid commute time. It subtracts estimated extra work-from-home costs
-    (electricity, heat, internet) so the comparison is more realistic: working from home isn't free either.
-    Commute time is valued at 50% of your wage by default, following official U.S. DOT guidance for local
-    personal travel. You can change this to 0% or 100%.</p>
+    wear, clothing, and the value of unpaid commute time. Commute time is valued at 50% of your wage by default,
+    following official U.S. DOT guidance for local personal travel. You can change this to 0% or 100%.</p>
+  <p>An optional field under "Advanced assumptions" lets you subtract extra work-from-home costs (electricity,
+    heat, internet) if you want to account for them. It's off by default: those costs are genuinely hard to
+    isolate from what you'd pay anyway, and are usually small relative to commuting costs.</p>
   <p>Default values are pre-filled from public data for whichever country you select above, and every field is
     editable. Vehicle maintenance cost and fuel efficiency use U.S. figures for both countries in the absence of
     a Canada-specific equivalent. Tax rate is a rough estimate only. Actual rates vary widely by state/province
@@ -248,7 +249,7 @@
     <li>Vehicle maintenance cost: <a href="https://www.aaa.com/autorepair/drivingcosts" target="_blank" rel="noopener">AAA Your Driving Costs, 2025</a></li>
     <li>Transit fares: <a href="https://www.ttc.ca/Fares-and-passes" target="_blank" rel="noopener">Toronto TTC</a> &amp; <a href="https://www.mta.info/fares-tolls" target="_blank" rel="noopener">New York MTA</a> monthly pass pricing</li>
     <li>Lunch &amp; coffee pricing: <a href="https://pos.toasttab.com/blog/data/coffee-prices" target="_blank" rel="noopener">Toast Restaurant Trends</a> &amp; <a href="https://www.empower.com/the-currency/life/tracking-americas-food-spending-people-spend-monthly-on-groceries-and-restaurants-news" target="_blank" rel="noopener">Empower, restaurant spending</a></li>
-    <li>Extra WFH costs: <a href="https://www.powerwizard.com/blog/the-extra-cost-of-remote-work/" target="_blank" rel="noopener">PowerWizard</a> &amp; <a href="https://www.arcadia.com/blog/the-hidden-energy-costs-of-working-from-home" target="_blank" rel="noopener">Arcadia</a>, remote work energy cost studies</li>
+    <li>Extra WFH costs (optional field, off by default): <a href="https://www.powerwizard.com/blog/the-extra-cost-of-remote-work/" target="_blank" rel="noopener">PowerWizard</a> &amp; <a href="https://www.arcadia.com/blog/the-hidden-energy-costs-of-working-from-home" target="_blank" rel="noopener">Arcadia</a>, remote work energy cost studies</li>
     <li>Salary (US): <a href="https://www.bls.gov/opub/ted/2026/median-weekly-earnings-were-1204-in-2025.htm" target="_blank" rel="noopener">U.S. Bureau of Labor Statistics</a>, median full-time earnings</li>
     <li>Salary (Canada): <a href="https://www150.statcan.gc.ca/n1/pub/14-28-0001/2025001/article/00001-eng.htm" target="_blank" rel="noopener">Statistics Canada</a>, average employment income</li>
     <li>Value of commute time: <a href="https://www.transportation.gov/office-policy/transportation-policy/revised-departmental-guidance-valuation-travel-time-economic" target="_blank" rel="noopener">U.S. DOT Guidance on Valuation of Travel Time</a></li>

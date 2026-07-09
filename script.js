@@ -339,7 +339,7 @@
         snacksPerDay: get('snacksPerDay', 3),
         childcarePerDay: get('childcarePerDay', 0),
         clothingMonthly: get('clothingMonthly', 25),
-        wfhExtraMonthly: get('wfhExtraMonthly', 60),
+        wfhExtraMonthly: get('wfhExtraMonthly', 0),
         incomeMode: p.get('im') === 'hourly' ? 'hourly' : 'salary',
         annualSalary: get('annualSalary', profile.annualSalary),
         hourlyWage: get('hourlyWage', round(profile.annualSalary / 2080, 1)),
