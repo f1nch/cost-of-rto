@@ -266,29 +266,62 @@
   }
 
   // ---------- URL sync ----------
+  // Short, mnemonic query keys instead of full field names, so shared links
+  // stay compact. Still a plain inspectable query string, just abbreviated.
+  const PARAM_KEYS = {
+    officeDaysPerWeek: 'd',
+    workWeeksPerYear: 'w',
+    commuteMinutesEachWay: 'cm',
+    commuteDistanceKmEachWay: 'cd',
+    mode: 'mo',
+    gasPricePerLitre: 'gp',
+    fuelEfficiencyLPer100Km: 'fe',
+    parkingPerDay: 'pk',
+    tollsPerDay: 'tl',
+    insuranceExtraPerMonth: 'ins',
+    wearPerKm: 'wr',
+    transitPerDay: 'tr',
+    stationParkingPerDay: 'sp',
+    breakfastPerDay: 'bf',
+    lunchPerDay: 'lu',
+    coffeePerDay: 'cf',
+    snacksPerDay: 'sn',
+    childcarePerDay: 'cc',
+    clothingMonthly: 'cl',
+    wfhExtraMonthly: 'wf',
+    incomeMode: 'im',
+    annualSalary: 'sal',
+    hourlyWage: 'hw',
+    timeValueMultiplier: 'tv',
+    taxRate: 'tx'
+  };
+
   function syncURL(s) {
     const p = new URLSearchParams();
-    Object.entries(s).forEach(([k, v]) => p.set(k, v));
-    p.set('unit', currentUnit);
-    p.set('country', currentCountry);
+    Object.entries(s).forEach(([k, v]) => p.set(PARAM_KEYS[k] || k, v));
+    p.set('u', currentUnit);
+    p.set('co', currentCountry);
     history.replaceState(null, '', '?' + p.toString());
   }
 
   function parseURLState() {
     const p = new URLSearchParams(location.search);
     if (![...p.keys()].length) return null;
-    const country = p.get('country') === 'ca' ? 'ca' : 'us';
+    const country = p.get('co') === 'ca' ? 'ca' : 'us';
     const profile = COUNTRY_DEFAULTS[country];
-    const get = (k, fallback) => p.has(k) ? parseFloat(p.get(k)) : fallback;
+    const get = (k, fallback) => {
+      const short = PARAM_KEYS[k];
+      return p.has(short) ? parseFloat(p.get(short)) : fallback;
+    };
     return {
       country,
-      unit: p.get('unit') === 'metric' ? 'metric' : (p.get('unit') === 'us' ? 'us' : profile.unit),
+      unit: p.get('u') === 'metric' ? 'metric' : (p.get('u') === 'us' ? 'us' : profile.unit),
       state: {
         officeDaysPerWeek: get('officeDaysPerWeek', 3),
         workWeeksPerYear: get('workWeeksPerYear', 48),
         commuteMinutesEachWay: get('commuteMinutesEachWay', profile.commuteMinutesEachWay),
         commuteDistanceKmEachWay: get('commuteDistanceKmEachWay', profile.commuteDistanceKmEachWay),
-        mode: p.get('mode') === 'transit' ? 'transit' : 'car',
+        mode: p.get('mo') === 'transit' ? 'transit' : 'car',
         gasPricePerLitre: get('gasPricePerLitre', profile.gasPricePerLitre),
         fuelEfficiencyLPer100Km: get('fuelEfficiencyLPer100Km', 8.5),
         parkingPerDay: get('parkingPerDay', 0),
@@ -304,7 +337,7 @@
         childcarePerDay: get('childcarePerDay', 0),
         clothingMonthly: get('clothingMonthly', 25),
         wfhExtraMonthly: get('wfhExtraMonthly', 60),
-        incomeMode: p.get('incomeMode') === 'hourly' ? 'hourly' : 'salary',
+        incomeMode: p.get('im') === 'hourly' ? 'hourly' : 'salary',
         annualSalary: get('annualSalary', profile.annualSalary),
         hourlyWage: get('hourlyWage', round(profile.annualSalary / 2080, 1)),
         timeValueMultiplier: get('timeValueMultiplier', 0.5),
