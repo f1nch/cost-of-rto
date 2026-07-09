@@ -216,8 +216,8 @@
       `${currency.format(result.monthlyTotalCost)}/month · ${currency.format(result.costPerOfficeDay)} per office day`;
 
     document.getElementById('out-hours-year').textContent = `${number1.format(result.annualCommuteHours)} hours/year`;
-    document.getElementById('out-hours-week').textContent =
-      `${number1.format(result.weeklyCommuteHours)} hours/week · ${number1.format(result.annualCommuteDays)} full workdays/year`;
+    document.getElementById('out-hours-week-val').textContent = number1.format(result.weeklyCommuteHours);
+    document.getElementById('out-workdays-val').textContent = number1.format(result.annualCommuteDays);
 
     document.getElementById('out-breakeven').textContent = currency.format(result.preTaxRaiseNeeded);
 

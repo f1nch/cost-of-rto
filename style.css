@@ -203,8 +203,34 @@ input[type="number"]:focus, select:focus {
   font-size: 1.7rem;
   font-weight: 700;
 }
+.stat-number-bold {
+  font-size: clamp(1.9rem, 5vw, 2.5rem);
+  font-weight: 800;
+}
 .accent-orange { color: var(--accent-orange); }
+.accent-blue { color: var(--brand); }
 .result-sub { margin: 8px 0 0; color: var(--ink-secondary); font-size: 0.92rem; }
+
+.mini-stats {
+  display: flex;
+  gap: 28px;
+  margin-top: 12px;
+}
+.mini-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mini-stat-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+  font-variant-numeric: tabular-nums;
+}
+.mini-stat-label {
+  font-size: 0.8rem;
+  color: var(--ink-secondary);
+}
 
 /* ---------- Breakdown bars ---------- */
 .breakdown { margin-top: 10px; display: flex; flex-direction: column; gap: 10px; }
