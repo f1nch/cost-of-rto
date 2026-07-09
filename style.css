@@ -150,6 +150,52 @@ input[type="number"]:focus, select:focus {
   outline-offset: 1px;
 }
 
+/* Hide native spinner arrows; replaced with custom steppers in script.js */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.number-field {
+  position: relative;
+}
+.number-field input[type="number"] {
+  padding-right: 34px;
+}
+.num-steppers {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 28px;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--gridline);
+  border-radius: 0 7px 7px 0;
+  overflow: hidden;
+}
+.num-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: var(--surface);
+  color: var(--ink-secondary);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  font-size: 0.7rem;
+}
+.num-btn:first-child { border-bottom: 1px solid var(--gridline); }
+.num-btn:hover { background: var(--brand); color: #fff; }
+.num-btn:active { background: var(--brand); opacity: 0.85; }
+
 .segmented {
   display: inline-flex;
   border: 1px solid var(--gridline);

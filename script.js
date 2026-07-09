@@ -444,6 +444,48 @@
     }
   }
 
+  // ---------- Custom number steppers ----------
+  // Native spinner arrows can't be meaningfully restyled cross-browser, so
+  // hide them (CSS) and replace with custom buttons that respect each
+  // field's step/min/max and fire the same 'input' event recalc() listens for.
+  function enhanceNumberInputs() {
+    form.querySelectorAll('input[type="number"]').forEach(input => {
+      const wrap = document.createElement('div');
+      wrap.className = 'number-field';
+      input.parentNode.insertBefore(wrap, input);
+      wrap.appendChild(input);
+
+      const steppers = document.createElement('div');
+      steppers.className = 'num-steppers';
+
+      const makeBtn = (label, symbol, dir) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'num-btn';
+        btn.setAttribute('aria-label', label);
+        btn.textContent = symbol;
+        btn.addEventListener('click', () => bump(input, dir));
+        return btn;
+      };
+
+      steppers.appendChild(makeBtn('Increase', '▲', 1));
+      steppers.appendChild(makeBtn('Decrease', '▼', -1));
+      wrap.appendChild(steppers);
+    });
+  }
+
+  function bump(input, dir) {
+    const step = parseFloat(input.step) || 1;
+    const decimals = (String(step).split('.')[1] || '').length;
+    const factor = Math.pow(10, decimals);
+    let next = (parseFloat(input.value) || 0) + dir * step;
+    next = Math.round(next * factor) / factor;
+    if (input.min !== '' && next < parseFloat(input.min)) next = parseFloat(input.min);
+    if (input.max !== '' && next > parseFloat(input.max)) next = parseFloat(input.max);
+    input.value = next;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
   // ---------- Init ----------
   function init() {
     const fromURL = parseURLState();
@@ -461,6 +503,7 @@
     }
     updateModeVisibility(form.elements['mode'].value);
     updateIncomeVisibility(form.elements['incomeMode'].value);
+    enhanceNumberInputs();
     recalc();
   }
 
