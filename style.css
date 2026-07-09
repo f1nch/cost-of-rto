@@ -12,6 +12,7 @@
   --good: #0ca30c;
   --good-text: #006300;
   --radius: 10px;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -236,27 +237,50 @@ input[type="number"] {
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
-.hero-result { border-color: var(--accent-red); }
+.hero-result {
+  border-color: var(--accent-red);
+  position: relative;
+  padding-bottom: 28px;
+  overflow: hidden;
+}
+.hero-result::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 12px;
+  background:
+    linear-gradient(135deg, var(--page) 50%, transparent 50%) 0 -1px / 16px 16px repeat-x,
+    linear-gradient(-135deg, var(--page) 50%, transparent 50%) 0 -1px / 16px 16px repeat-x;
+  filter: drop-shadow(0 1px 0 var(--gridline)) drop-shadow(0 -1px 1px rgba(0,0,0,0.08));
+}
 .hero-number {
   margin: 0;
-  font-size: clamp(2.2rem, 6vw, 3rem);
-  font-weight: 800;
+  font-family: var(--mono);
+  font-size: clamp(2rem, 5.4vw, 2.7rem);
+  font-weight: 700;
   color: var(--accent-red);
   line-height: 1.05;
+  font-variant-numeric: tabular-nums;
 }
 .stat-number {
   margin: 0;
-  font-size: 1.7rem;
+  font-family: var(--mono);
+  font-size: 1.6rem;
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 .stat-number-bold {
-  font-size: clamp(1.9rem, 5vw, 2.5rem);
+  font-size: clamp(1.8rem, 4.6vw, 2.3rem);
   font-weight: 800;
 }
 .accent-orange { color: var(--accent-orange); }
 .accent-blue { color: var(--brand); }
 .accent-green { color: var(--good-text); }
 .result-sub { margin: 8px 0 0; color: var(--ink-secondary); font-size: 0.92rem; }
+.result-sub-mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
 
 .mini-stats {
   display: flex;
@@ -269,7 +293,8 @@ input[type="number"] {
   gap: 2px;
 }
 .mini-stat-value {
-  font-size: 1.4rem;
+  font-family: var(--mono);
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--ink-primary);
   font-variant-numeric: tabular-nums;
@@ -303,7 +328,35 @@ input[type="number"] {
 }
 .bd-negative .bd-fill { background: var(--good); }
 .bd-negative .bd-value { color: var(--good-text); }
-.bd-value { font-size: 0.85rem; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.bd-value { font-family: var(--mono); font-size: 0.82rem; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---------- Fact card ---------- */
+.fact-card { border-left: 3px solid var(--brand); }
+.fact-header { display: flex; align-items: center; justify-content: space-between; }
+.fact-nav { display: flex; gap: 6px; }
+.fact-nav button {
+  width: 26px; height: 26px;
+  border: 1px solid var(--gridline);
+  border-radius: 6px;
+  background: var(--page);
+  color: var(--ink-secondary);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+.fact-nav button:hover { border-color: var(--brand); color: var(--brand); }
+.fact-text {
+  margin: 8px 0 6px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ink-primary);
+  min-height: 4.5em;
+  transition: opacity 0.2s ease;
+}
+.fact-text.fading { opacity: 0; }
+.fact-source { margin: 0; font-size: 0.78rem; color: var(--ink-muted); }
+.fact-source a { color: var(--ink-muted); }
 
 /* ---------- Share ---------- */
 .share-text {

@@ -25,7 +25,7 @@
     <div class="result-card hero-result">
       <p class="result-label">Your estimated RTO cost is</p>
       <p class="hero-number" id="out-annual">$0/year</p>
-      <p class="result-sub" id="out-monthly-day">$0/month · $0 per office day</p>
+      <p class="result-sub result-sub-mono" id="out-monthly-day">$0/month · $0 per office day</p>
     </div>
 
     <div class="result-card">
@@ -57,6 +57,18 @@
     <div class="result-card">
       <p class="result-label">Cost breakdown</p>
       <div id="breakdown" class="breakdown"></div>
+    </div>
+
+    <div class="result-card fact-card">
+      <div class="fact-header">
+        <p class="result-label">Did you know?</p>
+        <div class="fact-nav">
+          <button type="button" id="fact-prev" aria-label="Previous fact">‹</button>
+          <button type="button" id="fact-next" aria-label="Next fact">›</button>
+        </div>
+      </div>
+      <p id="fact-text" class="fact-text"></p>
+      <p class="fact-source" id="fact-source"></p>
     </div>
 
     <div class="result-card share-card">
@@ -224,7 +236,7 @@
         <input type="number" id="taxRate" min="0" max="80" step="1" value="25">
       </div>
       <div class="field">
-        <label for="wfhExtraMonthly">Extra cost of working from home, per month ($) <span class="hint">(electricity, heat, internet — optional, subtracted from your total. Off by default since it's hard to pin down and often marginal.)</span></label>
+        <label for="wfhExtraMonthly">Extra cost of working from home, per month ($) <span class="hint">(electricity, heat, internet. Optional, subtracted from your total. Off by default since it's hard to pin down and often marginal.)</span></label>
         <input type="number" id="wfhExtraMonthly" min="0" step="1" value="0">
       </div>
     </details>

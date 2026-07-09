@@ -500,6 +500,93 @@
     input.dispatchEvent(new Event('input', { bubbles: true }));
   }
 
+  // ---------- Fact panel ----------
+  const FUN_FACTS = [
+    {
+      text: "Nurses, EMTs, and tradespeople never had the option to work from home. Their average commute (24-32 min) is already comparable to the national average.",
+      source: "University of Washington",
+      url: "https://depts.washington.edu/fammed/chws/wp-content/uploads/sites/5/2020/05/Commute-Patterns-FR-2020.pdf"
+    },
+    {
+      text: "None of the 9,700+ U.S. federal buildings reviewed in 2024 met the government's own 60% office-utilization threshold.",
+      source: "GSA",
+      url: "https://www.gsa.gov/about-gsa/newsroom/news-releases/gsa-releases-use-it-act-data-03312026"
+    },
+    {
+      text: "When roughly 65,000 Amazon employees returned to Seattle-area offices, commute times rose 15–20% in a matter of weeks.",
+      source: "INRIX",
+      url: "https://inrix.com/blog/amazon-return-to-office-2025/"
+    },
+    {
+      text: "Traffic congestion adds an estimated 10 minutes, on average, to emergency response times.",
+      source: "Safety21, Carnegie Mellon",
+      url: "https://safety21.cmu.edu/2025/04/28/the-growing-challenge-of-traffic-congestion-on-emergency-response-times/"
+    },
+    {
+      text: "As remote and hybrid job postings shrink, rural workers lose access to jobs they often can't relocate to reach.",
+      source: "FlexJobs",
+      url: "https://www.flexjobs.com/blog/post/how-flexible-work-impacts-rural-workers/"
+    },
+    {
+      text: "Burning one gallon of gasoline releases about 8,887 grams of CO2. A typical car's annual commute adds roughly 4.6 metric tons a year.",
+      source: "U.S. EPA",
+      url: "https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle"
+    },
+    {
+      text: "The U.S. Department of Transportation values commute time at 50% of your wage for economic policy purposes, the same default this calculator uses.",
+      source: "U.S. DOT",
+      url: "https://www.transportation.gov/office-policy/transportation-policy/revised-departmental-guidance-valuation-travel-time-economic"
+    },
+    {
+      text: "In Canada, roughly half of federal office space sat underused before the pandemic. Hitting the reduction target would save $3.9 billion over a decade.",
+      source: "CBC",
+      url: "https://www.cbc.ca/news/canada/ottawa/canada-federal-public-service-office-space-cuts-1.7642176"
+    }
+  ];
+
+  let factIndex = Math.floor(Math.random() * FUN_FACTS.length);
+  let factTimer = null;
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function renderFact(instant) {
+    const fact = FUN_FACTS[factIndex];
+    const textEl = document.getElementById('fact-text');
+    const sourceEl = document.getElementById('fact-source');
+    const apply = () => {
+      textEl.textContent = fact.text;
+      sourceEl.innerHTML = `Source: <a href="${fact.url}" target="_blank" rel="noopener">${fact.source}</a>`;
+      textEl.classList.remove('fading');
+    };
+    if (reduceMotion || instant) {
+      apply();
+    } else {
+      textEl.classList.add('fading');
+      setTimeout(apply, 200);
+    }
+  }
+
+  function showFact(dir) {
+    factIndex = (factIndex + dir + FUN_FACTS.length) % FUN_FACTS.length;
+    renderFact();
+    restartFactTimer();
+  }
+
+  function restartFactTimer() {
+    if (factTimer) clearInterval(factTimer);
+    if (reduceMotion) return;
+    factTimer = setInterval(() => {
+      factIndex = (factIndex + 1) % FUN_FACTS.length;
+      renderFact();
+    }, 8000);
+  }
+
+  function initFactPanel() {
+    renderFact(true);
+    restartFactTimer();
+    document.getElementById('fact-prev').addEventListener('click', () => showFact(-1));
+    document.getElementById('fact-next').addEventListener('click', () => showFact(1));
+  }
+
   // ---------- Init ----------
   function init() {
     const fromURL = parseURLState();
@@ -518,6 +605,7 @@
     updateModeVisibility(form.elements['mode'].value);
     updateIncomeVisibility(form.elements['incomeMode'].value);
     enhanceNumberInputs();
+    initFactPanel();
     recalc();
   }
 
