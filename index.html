@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cost of RTO: What Is Your Return-to-Office Mandate Really Costing You?</title>
+<meta name="description" content="Calculate the real annual cost of returning to the office: gas, transit, parking, food, clothing, childcare, and unpaid commute time.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="brand">Cost of RTO</p>
+    <h1>Returning to the office is not free.</h1>
+    <p class="hero-sub">Gas, transit, parking, food, coffee, clothing, and unpaid commute time all add up.
+      This calculator estimates the real annual cost of going into the office compared to working from home.</p>
+    <a class="cta" href="#calculator">Calculate my RTO cost ↓</a>
+  </div>
+</header>
+
+<main class="layout" id="calculator">
+  <aside class="results-panel" id="results" aria-live="polite">
+    <div class="result-card hero-result">
+      <p class="result-label">Your estimated RTO cost is</p>
+      <p class="hero-number" id="out-annual">$0/year</p>
+      <p class="result-sub" id="out-monthly-day">$0/month · $0 per office day</p>
+    </div>
+
+    <div class="result-card">
+      <p class="result-label">Time lost commuting</p>
+      <p class="stat-number" id="out-hours-year">0 hours/year</p>
+      <p class="result-sub" id="out-hours-week">0 hours/week · 0 full workdays/year</p>
+    </div>
+
+    <div class="result-card">
+      <p class="result-label">Raise needed to break even (pre-tax)</p>
+      <p class="stat-number accent-orange" id="out-breakeven">$0</p>
+    </div>
+
+    <div class="result-card">
+      <p class="result-label">Cost breakdown</p>
+      <div id="breakdown" class="breakdown"></div>
+    </div>
+
+    <div class="result-card share-card">
+      <p class="result-label">Share your result</p>
+      <textarea id="share-text" class="share-text" readonly rows="4"></textarea>
+      <div class="share-buttons">
+        <button type="button" id="copy-text-btn">Copy text</button>
+        <button type="button" id="copy-link-btn">Copy link</button>
+      </div>
+      <p class="copy-confirm" id="copy-confirm" aria-live="polite"></p>
+    </div>
+  </aside>
+
+  <form id="calc-form" class="form-panel" autocomplete="off">
+
+    <fieldset class="section">
+      <legend>Location</legend>
+      <div class="field">
+        <span class="field-label-static">Country <span class="hint">(sets sourced defaults for gas, transit, distance &amp; salary)</span></span>
+        <div class="segmented" role="radiogroup" aria-label="Country">
+          <label class="segmented-opt"><input type="radio" name="country" value="us" checked> United States</label>
+          <label class="segmented-opt"><input type="radio" name="country" value="ca"> Canada</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="section">
+      <legend>Work schedule</legend>
+      <div class="field">
+        <label for="officeDaysPerWeek">Days in office per week</label>
+        <input type="number" id="officeDaysPerWeek" min="0" max="7" step="0.5" value="3">
+      </div>
+      <div class="field">
+        <label for="workWeeksPerYear">Work weeks per year</label>
+        <input type="number" id="workWeeksPerYear" min="1" max="52" step="1" value="48">
+      </div>
+    </fieldset>
+
+    <fieldset class="section">
+      <legend>Commute</legend>
+
+      <div class="field unit-toggle-field">
+        <span class="field-label-static">Units</span>
+        <div class="segmented" role="radiogroup" aria-label="Units">
+          <label class="segmented-opt"><input type="radio" name="unit" value="metric"> Metric (km, L)</label>
+          <label class="segmented-opt"><input type="radio" name="unit" value="us" checked> US (mi, gal)</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="commuteMinutesEachWay">Commute time, each way (minutes)</label>
+        <input type="number" id="commuteMinutesEachWay" min="0" step="1" value="27">
+      </div>
+      <div class="field">
+        <label for="commuteDistanceEachWay"><span class="unit-label" data-unit-label="distance">Commute distance, each way (mi)</span></label>
+        <input type="number" id="commuteDistanceEachWay" min="0" step="0.1" value="18.6">
+      </div>
+
+      <div class="field">
+        <span class="field-label-static">Commute mode</span>
+        <div class="segmented" role="radiogroup" aria-label="Commute mode">
+          <label class="segmented-opt"><input type="radio" name="mode" value="car" checked> Car</label>
+          <label class="segmented-opt"><input type="radio" name="mode" value="transit"> Transit</label>
+        </div>
+      </div>
+
+      <div class="mode-fields" data-mode="car">
+        <div class="field">
+          <label for="gasPrice"><span class="unit-label" data-unit-label="gasPrice">Gas price ($/gallon)</span></label>
+          <input type="number" id="gasPrice" min="0" step="0.01" value="3.75">
+        </div>
+        <div class="field">
+          <label for="fuelEfficiency"><span class="unit-label" data-unit-label="fuelEfficiency">Fuel efficiency (mpg)</span></label>
+          <input type="number" id="fuelEfficiency" min="0" step="0.1" value="27.7">
+        </div>
+        <div class="field">
+          <label for="parkingPerDay">Parking per office day ($)</label>
+          <input type="number" id="parkingPerDay" min="0" step="0.5" value="0">
+        </div>
+        <div class="field">
+          <label for="tollsPerDay">Tolls per office day ($)</label>
+          <input type="number" id="tollsPerDay" min="0" step="0.5" value="0">
+        </div>
+      </div>
+
+      <div class="mode-fields" data-mode="transit" hidden>
+        <div class="field">
+          <label for="transitPerDay">Transit fare per office day ($)</label>
+          <input type="number" id="transitPerDay" min="0" step="0.5" value="6">
+        </div>
+        <div class="field">
+          <label for="stationParkingPerDay">Station parking per office day ($)</label>
+          <input type="number" id="stationParkingPerDay" min="0" step="0.5" value="0">
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="section">
+      <legend>Office-day spending</legend>
+      <div class="field">
+        <label for="breakfastPerDay">Breakfast per office day ($)</label>
+        <input type="number" id="breakfastPerDay" min="0" step="0.5" value="0">
+      </div>
+      <div class="field">
+        <label for="lunchPerDay">Lunch per office day ($)</label>
+        <input type="number" id="lunchPerDay" min="0" step="0.5" value="15">
+      </div>
+      <div class="field">
+        <label for="coffeePerDay">Coffee per office day ($)</label>
+        <input type="number" id="coffeePerDay" min="0" step="0.5" value="4">
+      </div>
+      <div class="field">
+        <label for="snacksPerDay">Snacks per office day ($)</label>
+        <input type="number" id="snacksPerDay" min="0" step="0.5" value="3">
+      </div>
+      <div class="field">
+        <label for="childcarePerDay">Extra childcare per office day ($)</label>
+        <input type="number" id="childcarePerDay" min="0" step="0.5" value="0">
+      </div>
+      <div class="field">
+        <label for="clothingMonthly">Clothing / dry cleaning / appearance, per month ($)</label>
+        <input type="number" id="clothingMonthly" min="0" step="1" value="25">
+      </div>
+      <div class="field">
+        <label for="wfhExtraMonthly">Extra WFH costs, per month ($) <span class="hint">(electricity, heat, internet)</span></label>
+        <input type="number" id="wfhExtraMonthly" min="0" step="1" value="60">
+      </div>
+    </fieldset>
+
+    <fieldset class="section">
+      <legend>Income &amp; time</legend>
+      <div class="field">
+        <span class="field-label-static">How should we value your time?</span>
+        <div class="segmented" role="radiogroup" aria-label="Income entry mode">
+          <label class="segmented-opt"><input type="radio" name="incomeMode" value="salary" checked> Annual salary</label>
+          <label class="segmented-opt"><input type="radio" name="incomeMode" value="hourly"> Hourly wage</label>
+        </div>
+      </div>
+      <div class="field income-field" data-income="salary">
+        <label for="annualSalary">Annual salary ($)</label>
+        <input type="number" id="annualSalary" min="0" step="500" value="62608">
+      </div>
+      <div class="field income-field" data-income="hourly" hidden>
+        <label for="hourlyWage">Hourly wage ($)</label>
+        <input type="number" id="hourlyWage" min="0" step="0.5" value="30.1">
+      </div>
+      <div class="field">
+        <label for="timeValueMultiplier">Value my commute time at</label>
+        <select id="timeValueMultiplier">
+          <option value="0">Don't value it, show hours only</option>
+          <option value="0.5" selected>Half my wage</option>
+          <option value="1">Full wage</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <details class="section advanced">
+      <summary>Advanced assumptions</summary>
+      <div class="field">
+        <label for="insuranceExtraPerMonth">Extra insurance from commuting, per month ($)</label>
+        <input type="number" id="insuranceExtraPerMonth" min="0" step="1" value="0">
+      </div>
+      <div class="field">
+        <label for="wearPerDistance"><span class="unit-label" data-unit-label="wear">Vehicle wear &amp; maintenance ($/mi)</span></label>
+        <input type="number" id="wearPerDistance" min="0" step="0.01" value="0.19">
+      </div>
+      <div class="field">
+        <label for="taxRate">Marginal tax rate (%) <span class="hint">(rough estimate, adjust to your bracket)</span></label>
+        <input type="number" id="taxRate" min="0" max="80" step="1" value="25">
+      </div>
+    </details>
+  </form>
+</main>
+
+<section class="methodology wrap">
+  <h2>Methodology</h2>
+  <p>This calculator estimates recurring costs tied to in-office work: transportation, parking, food, vehicle
+    wear, clothing, and the value of unpaid commute time. It subtracts estimated extra work-from-home costs
+    (electricity, heat, internet) so the comparison is more realistic: working from home isn't free either.
+    Commute time is valued at 50% of your wage by default, following official U.S. DOT guidance for local
+    personal travel. You can change this to 0% or 100%.</p>
+  <p>Default values are pre-filled from public data for whichever country you select above, and every field is
+    editable. Vehicle maintenance cost and fuel efficiency use U.S. figures for both countries in the absence of
+    a Canada-specific equivalent. Tax rate is a rough estimate only. Actual rates vary widely by state/province
+    and income, so adjust it to your own bracket.</p>
+  <p class="disclaimer">This is an estimate, not financial advice. Your exact costs will vary.</p>
+
+  <h3>Data sources</h3>
+  <ul class="sources">
+    <li>Commute time &amp; distance (US): <a href="https://www.census.gov/library/visualizations/interactive/travel-time.html" target="_blank" rel="noopener">U.S. Census Bureau, American Community Survey</a></li>
+    <li>Commute time &amp; distance (Canada): <a href="https://www150.statcan.gc.ca/n1/pub/14-28-0001/2023001/article/00003-eng.htm" target="_blank" rel="noopener">Statistics Canada, Commuting time 2011–2022</a> &amp; <a href="https://www150.statcan.gc.ca/n1/pub/75-006-x/2019001/article/00002-eng.htm" target="_blank" rel="noopener">2016 Census, commuting distance</a></li>
+    <li>Fuel efficiency: <a href="https://www.epa.gov/automotive-trends/highlights-automotive-trends-report" target="_blank" rel="noopener">U.S. EPA Automotive Trends Report</a></li>
+    <li>Gas price (US): <a href="https://www.eia.gov/dnav/pet/hist/leafhandler.ashx?f=m&amp;n=pet&amp;s=emm_epm0_pte_nus_dpg" target="_blank" rel="noopener">U.S. Energy Information Administration</a></li>
+    <li>Gas price (Canada): <a href="https://www.caa.ca/gas-prices/" target="_blank" rel="noopener">CAA National Gas Price Report</a></li>
+    <li>Vehicle maintenance cost: <a href="https://www.aaa.com/autorepair/drivingcosts" target="_blank" rel="noopener">AAA Your Driving Costs, 2025</a></li>
+    <li>Transit fares: <a href="https://www.ttc.ca/Fares-and-passes" target="_blank" rel="noopener">Toronto TTC</a> &amp; <a href="https://www.mta.info/fares-tolls" target="_blank" rel="noopener">New York MTA</a> monthly pass pricing</li>
+    <li>Lunch &amp; coffee pricing: <a href="https://pos.toasttab.com/blog/data/coffee-prices" target="_blank" rel="noopener">Toast Restaurant Trends</a> &amp; <a href="https://www.empower.com/the-currency/life/tracking-americas-food-spending-people-spend-monthly-on-groceries-and-restaurants-news" target="_blank" rel="noopener">Empower, restaurant spending</a></li>
+    <li>Extra WFH costs: <a href="https://www.powerwizard.com/blog/the-extra-cost-of-remote-work/" target="_blank" rel="noopener">PowerWizard</a> &amp; <a href="https://www.arcadia.com/blog/the-hidden-energy-costs-of-working-from-home" target="_blank" rel="noopener">Arcadia</a>, remote work energy cost studies</li>
+    <li>Salary (US): <a href="https://www.bls.gov/opub/ted/2026/median-weekly-earnings-were-1204-in-2025.htm" target="_blank" rel="noopener">U.S. Bureau of Labor Statistics</a>, median full-time earnings</li>
+    <li>Salary (Canada): <a href="https://www150.statcan.gc.ca/n1/pub/14-28-0001/2025001/article/00001-eng.htm" target="_blank" rel="noopener">Statistics Canada</a>, average employment income</li>
+    <li>Value of commute time: <a href="https://www.transportation.gov/office-policy/transportation-policy/revised-departmental-guidance-valuation-travel-time-economic" target="_blank" rel="noopener">U.S. DOT Guidance on Valuation of Travel Time</a></li>
+  </ul>
+</section>
+
+<section class="public-case">
+  <div class="wrap">
+    <h2>The public case against RTO</h2>
+    <p class="lead">This isn't a fight between people who want to work from home and people who never could.
+      Nurses, EMTs, and tradespeople never had that option. Their average one-way commute
+      (<a href="https://depts.washington.edu/fammed/chws/wp-content/uploads/sites/5/2020/05/Commute-Patterns-FR-2020.pdf" target="_blank" rel="noopener">24–32 minutes for nurses</a>)
+      is already comparable to, or longer than, the national average. Every unnecessary RTO mandate adds more
+      cars to the same roads they depend on to reach patients and emergencies. Unneeded commuting makes things
+      worse for everyone, not just the people forced back into an office.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <h3>It wastes taxpayer money</h3>
+        <p>None of the 9,700+ U.S. federal buildings reviewed under the 2024 USE IT Act met the government's own
+          60% utilization threshold, and underused federal office space wastes an estimated $1.34 billion a year
+          (<a href="https://www.gsa.gov/about-gsa/newsroom/news-releases/gsa-releases-use-it-act-data-03312026" target="_blank" rel="noopener">GSA</a>,
+          <a href="https://www.govexec.com/management/2026/04/underused-federal-offices-targeted-gsa-releases-utilization-data/412559/" target="_blank" rel="noopener">GovExec</a>).
+          In Canada, roughly half of federal office space was underused before the pandemic. Hitting the
+          reduction target would save $3.9 billion over a decade, but in-office mandates are actively getting in
+          the way of selling off that space
+          (<a href="https://www.cbc.ca/news/canada/ottawa/canada-federal-public-service-office-space-cuts-1.7642176" target="_blank" rel="noopener">CBC</a>).</p>
+      </div>
+      <div class="pillar">
+        <h3>It worsens traffic and pollution for everyone</h3>
+        <p>Amazon's return-to-office mandate alone added tens of thousands of commuters to Seattle's morning
+          traffic, pushing commute times up 20% versus 2019
+          (<a href="https://www.spokesman.com/stories/2025/dec/04/seattle-traffic-worsens-amid-roadwork-and-return-t/" target="_blank" rel="noopener">Spokesman-Review</a>);
+          U.S. traffic congestion cost the economy $74 billion in 2024
+          (<a href="https://kbs.com/insights/return-to-office-traffic-reaches-record-level/" target="_blank" rel="noopener">KBS</a>).
+          When 17,000 federal workers returned to Washington's Navy Yard in 2025, it caused a congestion spike
+          overnight (<a href="https://www.fox5dc.com/news/traffic-parking-concerns-thousands-federal-employees-prepare-return-office" target="_blank" rel="noopener">FOX 5 DC</a>).</p>
+      </div>
+      <div class="pillar">
+        <h3>It slows down emergency response</h3>
+        <p>Traffic congestion adds an estimated 10 minutes, on average, to emergency response times. In 2024,
+          nearly half of U.S. first-responder agencies reported slower response times than the year before, and
+          most pointed to traffic congestion as the reason
+          (<a href="https://safety21.cmu.edu/2025/04/28/the-growing-challenge-of-traffic-congestion-on-emergency-response-times/" target="_blank" rel="noopener">Safety21, Carnegie Mellon</a>).</p>
+      </div>
+      <div class="pillar">
+        <h3>It shuts rural workers out</h3>
+        <p>Remote work had opened high-skill jobs to people outside major cities, with the biggest gains for
+          lower-income workers and those in areas with few local opportunities
+          (<a href="https://arxiv.org/pdf/2605.01268" target="_blank" rel="noopener">research on remote work and career mobility</a>).
+          As remote and hybrid job postings shrink, that door is closing again, and most rural workers can't
+          simply relocate to follow the jobs back to the city
+          (<a href="https://www.flexjobs.com/blog/post/how-flexible-work-impacts-rural-workers/" target="_blank" rel="noopener">FlexJobs</a>).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap footer">
+  <p>costofrto.com</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
