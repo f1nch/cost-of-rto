@@ -298,7 +298,10 @@
 
   function syncURL(s) {
     const p = new URLSearchParams();
-    Object.entries(s).forEach(([k, v]) => p.set(PARAM_KEYS[k] || k, v));
+    Object.entries(s).forEach(([k, v]) => {
+      const clean = typeof v === 'number' ? round(v, 4) : v;
+      p.set(PARAM_KEYS[k] || k, clean);
+    });
     p.set('u', currentUnit);
     p.set('co', currentCountry);
     history.replaceState(null, '', '?' + p.toString());
