@@ -44,6 +44,12 @@
     </div>
 
     <div class="result-card">
+      <p class="result-label">Carbon footprint of your commute</p>
+      <p class="stat-number stat-number-bold accent-green" id="out-co2">0 tons CO2/year</p>
+      <p class="result-sub" id="out-trees">Equivalent to 0 trees growing for a year to offset it</p>
+    </div>
+
+    <div class="result-card">
       <p class="result-label">Raise needed to break even (pre-tax)</p>
       <p class="stat-number accent-orange" id="out-breakeven">$0</p>
     </div>
@@ -253,6 +259,10 @@
     <li>Salary (US): <a href="https://www.bls.gov/opub/ted/2026/median-weekly-earnings-were-1204-in-2025.htm" target="_blank" rel="noopener">U.S. Bureau of Labor Statistics</a>, median full-time earnings</li>
     <li>Salary (Canada): <a href="https://www150.statcan.gc.ca/n1/pub/14-28-0001/2025001/article/00001-eng.htm" target="_blank" rel="noopener">Statistics Canada</a>, average employment income</li>
     <li>Value of commute time: <a href="https://www.transportation.gov/office-policy/transportation-policy/revised-departmental-guidance-valuation-travel-time-economic" target="_blank" rel="noopener">U.S. DOT Guidance on Valuation of Travel Time</a></li>
+    <li>Carbon emissions per gallon of gasoline &amp; average car footprint: <a href="https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle" target="_blank" rel="noopener">U.S. EPA</a></li>
+    <li>Tree carbon absorption equivalence: <a href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references" target="_blank" rel="noopener">U.S. EPA Greenhouse Gas Equivalencies Calculator</a></li>
+    <li>Transit emissions per passenger-km: German Federal Environment Agency bus/rail averages, via <a href="https://www.navit.com/resources/bus-train-car-or-e-scooter-carbon-emissions-of-transport-modes-ranked" target="_blank" rel="noopener">Navit</a></li>
+    <li>Seattle/Amazon return-to-office traffic impact: <a href="https://inrix.com/blog/amazon-return-to-office-2025/" target="_blank" rel="noopener">INRIX</a>, <a href="https://komonews.com/news/local/seattle-south-lake-union-neighborhood-scooter-traffic-amazon-return-to-office-mandate-road-infrastructure-king-county-light-rail-bird-lime-scooter-elliott-avenue-january-2024" target="_blank" rel="noopener">KOMO News</a>, <a href="https://www.seattletimes.com/seattle-news/transportation/amazon-workers-slow-the-seattle-area-commute-after-returning-to-office/" target="_blank" rel="noopener">Seattle Times</a></li>
   </ul>
 </section>
 
@@ -280,13 +290,25 @@
       </div>
       <div class="pillar">
         <h3>It worsens traffic and pollution for everyone</h3>
-        <p>Amazon's return-to-office mandate alone added tens of thousands of commuters to Seattle's morning
-          traffic, pushing commute times up 20% versus 2019
-          (<a href="https://www.spokesman.com/stories/2025/dec/04/seattle-traffic-worsens-amid-roadwork-and-return-t/" target="_blank" rel="noopener">Spokesman-Review</a>);
-          U.S. traffic congestion cost the economy $74 billion in 2024
-          (<a href="https://kbs.com/insights/return-to-office-traffic-reaches-record-level/" target="_blank" rel="noopener">KBS</a>).
-          When 17,000 federal workers returned to Washington's Navy Yard in 2025, it caused a congestion spike
-          overnight (<a href="https://www.fox5dc.com/news/traffic-parking-concerns-thousands-federal-employees-prepare-return-office" target="_blank" rel="noopener">FOX 5 DC</a>).</p>
+        <p>When roughly 65,000 Amazon employees returned to Seattle-area offices, commute times in the
+          Seattle-Bellevue area rose 15-20% in a matter of weeks
+          (<a href="https://inrix.com/blog/amazon-return-to-office-2025/" target="_blank" rel="noopener">INRIX</a>).
+          On Highway 520, Tuesday-morning speeds fell from about 35 mph to 15 mph in a single month
+          (<a href="https://komonews.com/news/local/seattle-south-lake-union-neighborhood-scooter-traffic-amazon-return-to-office-mandate-road-infrastructure-king-county-light-rail-bird-lime-scooter-elliott-avenue-january-2024" target="_blank" rel="noopener">KOMO</a>),
+          and the city measured a 5-9% jump in overall traffic over the same period
+          (<a href="https://www.seattletimes.com/seattle-news/transportation/amazon-workers-slow-the-seattle-area-commute-after-returning-to-office/" target="_blank" rel="noopener">Seattle Times</a>).
+          U.S. traffic congestion cost the economy $74 billion in 2024 overall
+          (<a href="https://kbs.com/insights/return-to-office-traffic-reaches-record-level/" target="_blank" rel="noopener">KBS</a>).</p>
+      </div>
+      <div class="pillar">
+        <h3>It adds unnecessary emissions</h3>
+        <p>Burning a gallon of gasoline releases about 8,887 grams of CO2. A typical car driven a typical
+          American's annual mileage adds roughly 4.6 metric tons of CO2 a year, which is what about 210 trees
+          would need to absorb over that same year to offset it
+          (<a href="https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle" target="_blank" rel="noopener">EPA vehicle emissions data</a>,
+          <a href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references" target="_blank" rel="noopener">EPA equivalencies calculator</a>).
+          Every unnecessary day of driving to an office that didn't need you there in person adds directly to
+          that total, for you and for everyone else stuck in the same traffic.</p>
       </div>
       <div class="pillar">
         <h3>It slows down emergency response</h3>

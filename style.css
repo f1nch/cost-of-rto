@@ -255,6 +255,7 @@ input[type="number"] {
 }
 .accent-orange { color: var(--accent-orange); }
 .accent-blue { color: var(--brand); }
+.accent-green { color: var(--good-text); }
 .result-sub { margin: 8px 0 0; color: var(--ink-secondary); font-size: 0.92rem; }
 
 .mini-stats {

@@ -4,6 +4,9 @@
   const KM_PER_MILE = 1.609344;
   const L_PER_GAL = 3.785412;
   const MPG_CONST = 235.214583; // L/100km <-> mpg (US gallon)
+  const CO2_KG_PER_LITRE_GASOLINE = 2.3477; // EPA/EIA: 8,887 g CO2 per gallon burned
+  const CO2_KG_PER_PASSENGER_KM_TRANSIT = 0.1; // ~100 g/passenger-km, blended bus/rail average
+  const CO2_KG_PER_TREE_YEAR = 22; // EPA: mature tree absorbs ~22 kg CO2/year
 
   const form = document.getElementById('calc-form');
   const number1 = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
@@ -158,15 +161,19 @@
     let parkingTollsCost = 0;
     let wearCost = 0;
     let insuranceCost = 0;
+    let annualCO2Kg = 0;
 
     if (s.mode === 'car') {
-      fuelOrTransitCost = (annualKm * s.fuelEfficiencyLPer100Km / 100) * s.gasPricePerLitre;
+      const annualLitres = annualKm * s.fuelEfficiencyLPer100Km / 100;
+      fuelOrTransitCost = annualLitres * s.gasPricePerLitre;
       wearCost = annualKm * s.wearPerKm;
       insuranceCost = s.insuranceExtraPerMonth * 12;
       parkingTollsCost = (s.parkingPerDay + s.tollsPerDay) * annualOfficeDays;
+      annualCO2Kg = annualLitres * CO2_KG_PER_LITRE_GASOLINE;
     } else {
       fuelOrTransitCost = s.transitPerDay * annualOfficeDays;
       parkingTollsCost = s.stationParkingPerDay * annualOfficeDays;
+      annualCO2Kg = annualKm * CO2_KG_PER_PASSENGER_KM_TRANSIT;
     }
 
     const foodCost = (s.breakfastPerDay + s.lunchPerDay + s.coffeePerDay + s.snacksPerDay) * annualOfficeDays;
@@ -201,10 +208,13 @@
       { label: 'WFH costs offset', value: -wfhOffset, hideIfZero: true, negative: true }
     ].filter(row => !(row.hideIfZero && Math.abs(row.value) < 0.5));
 
+    const annualCO2Tons = annualCO2Kg / 1000;
+    const treesToOffset = annualCO2Kg / CO2_KG_PER_TREE_YEAR;
+
     return {
       annualOfficeDays, annualCommuteHours, weeklyCommuteHours, annualCommuteDays,
       annualCashCost, annualTimeValue, annualTotalCost, monthlyTotalCost, costPerOfficeDay,
-      preTaxRaiseNeeded, breakdown
+      preTaxRaiseNeeded, breakdown, annualCO2Tons, treesToOffset
     };
   }
 
@@ -220,6 +230,10 @@
     document.getElementById('out-workdays-val').textContent = number1.format(result.annualCommuteDays);
 
     document.getElementById('out-breakeven').textContent = currency.format(result.preTaxRaiseNeeded);
+
+    document.getElementById('out-co2').textContent = `${number1.format(result.annualCO2Tons)} tons CO2/year`;
+    document.getElementById('out-trees').textContent =
+      `Equivalent to ${number1.format(result.treesToOffset)} trees growing for a year to offset it`;
 
     renderBreakdown(result.breakdown, currency);
     renderShareText(result, currency);
@@ -260,7 +274,7 @@
   function renderShareText(result, currency) {
     const text = `My estimated RTO cost: ${currency.format(result.annualTotalCost)}/year · ` +
       `${Math.round(result.annualCommuteHours)} commute hours/year · ` +
-      `${currency.format(result.costPerOfficeDay)}/office day\n` +
+      `${number1.format(result.annualCO2Tons)} tons CO2/year\n` +
       `Returning to the office is not free. costofrto.com`;
     document.getElementById('share-text').value = text;
   }
